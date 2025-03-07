@@ -2,7 +2,7 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Task {
+public final class Task {
 
     static int idTracker;
     static String formatrn = "MMMM-dd-yyyy eeee HH:mm:ss";
@@ -12,31 +12,21 @@ public class Task {
     String createdAt;
     String updatedAt;
 
-    Task(String description, String status) {
-        status = status.toLowerCase();
-        System.out.println("status is: " + status);
-        if (!status.equalsIgnoreCase("todo")) {
-            if (!status.equalsIgnoreCase("in-progress")) {
-                if (!status.equalsIgnoreCase("done")) {
-                    throw new IllegalArgumentException("Invalid status type only: \"todo\" \"in-progress\" \"done\"");
+    Task(String description) {
 
-                }
-                throw new IllegalArgumentException("Invalid status type only: \"todo\" \"in-progress\" \"done\"");
-
-            }
-            throw new IllegalArgumentException("Invalid status type only: \"todo\" \"in-progress\" \"done\"");
-
-        }
-
-        idTracker++;
+        idTracker++; // tracks the ID
         this.id = idTracker;
         this.description = description;
-        this.status = status;
+        this.status = "todo";
         LocalDateTime time = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern(formatrn);
         createdAt = time.format(format);
         updatedAt = "";
         System.out.println("Task Created");
+
+    }
+
+    Task() { //creates an empty task object for updating
 
     }
 
@@ -52,4 +42,19 @@ public class Task {
         }
 
     }
+
+    public Task overWrite(String description, Task t) { // simply overWrites description and returns the empty newly created task
+        Task empty = new Task();
+        empty.id = t.id;
+        empty.description = description;
+        empty.status = t.status;
+        empty.createdAt = t.createdAt;
+        LocalDateTime time = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern(formatrn);
+        empty.updatedAt = time.format(format);
+        System.out.println("Task Overwritten");
+
+        return empty;
+    }
+
 }
