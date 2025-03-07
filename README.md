@@ -1,7 +1,16 @@
-Task object constructor added version 1 
+Task object constructor added version2
 
-for simply creating a object named Task
+**--added empty object constructor
+-- overwrite task method (can be static?)
+-- list method with 3 categories (todo,in-progress,done)
+-- now does add task too
+-- can now get update time
+-- better bug catching**
 
-Task accepts 2 constructors of String which is: (String name, String status) NOTE: name = name of the task
+TO DO: 
+DELETE TASK
+MARK TASK TO ANOTHER CATEGORY (in-progress,done)
+JSON Parsing and Serialization
+JSON file will be created if it does not exist
 
-status should be = "todo" "in-progress" "done" otherwise ERROR
+**NO FRAMEWORKS OR EXTERNAL LIBRARIES**
