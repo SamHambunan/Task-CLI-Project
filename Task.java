@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 
 public final class Task {
 
-    static int idTracker;
+    static int IDtracker;
     static String formatrn = "MMMM-dd-yyyy eeee HH:mm:ss";
     int id;
     String description;
@@ -13,9 +13,21 @@ public final class Task {
     String updatedAt;
 
     Task(String description) {
+        IDtracker++;
+        this.id = IDtracker;
+        this.description = description;
+        this.status = "todo";
+        LocalDateTime time = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern(formatrn);
+        createdAt = time.format(format);
+        updatedAt = "";
+        System.out.println("Task Created");
 
-        idTracker++; // tracks the ID
-        this.id = idTracker;
+    }
+
+    Task(String description, int ID) {
+
+        this.id = ID;
         this.description = description;
         this.status = "todo";
         LocalDateTime time = LocalDateTime.now();
@@ -55,6 +67,11 @@ public final class Task {
         System.out.println("Task Overwritten");
 
         return empty;
+    }
+
+    @Override
+    public String toString() {
+        return "{" + "\"ID\": " + this.id + "," + " \"Description\": \"" + this.description + "\", \"status\": \"" + this.status + "\", \"createdAt\": \"" + this.createdAt + "\", \"updatedAt\": \"" + this.updatedAt + "\" }\n]";
     }
 
 }

@@ -1,9 +1,10 @@
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class CLI {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         args[0] = args[0].toLowerCase(); // makes sure the CLI the user has inputted is in lowercase to avoid error
         Main main = new Main(); // creates a object that will manage the Lists of class and the flow of JSON
