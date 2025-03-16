@@ -42,6 +42,30 @@ public class CLI {
                 }
 
             }
+            case "delete" -> {
+                try {
+                    int id = Integer.parseInt(args[1]);
+                    main.deleteTask(id);
+                } catch (NumberFormatException e) {
+                    System.out.println("You need to enter a number for the ID!");
+                }
+            }
+            case "mark-in-progress" -> {
+                try {
+                    int id = Integer.parseInt(args[1]); // parses the input to an integer
+                    main.updateTask(id, "in-progress");
+                } catch (NumberFormatException e) {
+                    System.out.println("You need to enter a number for the ID!");
+                }
+            }
+            case "mark-done" -> {
+                try {
+                    int id = Integer.parseInt(args[1]); // parses the input to an integer
+                    main.updateTask(id, "done");
+                } catch (NumberFormatException e) {
+                    System.out.println("You need to enter a number for the ID!");
+                }
+            }
             default ->
                 System.out.println("Invalid input do CLI --help"); // --help be done soon
         }

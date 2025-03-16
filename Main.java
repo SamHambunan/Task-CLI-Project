@@ -69,6 +69,7 @@ public class Main {
         ArrayList<String> lines = new ArrayList<>();
         FileReader file = null;
         BufferedReader buffer = null;
+        boolean found = false;
 
         try {
             file = new FileReader("data.json");
@@ -80,12 +81,16 @@ public class Main {
                         lines.remove(lines.size() - 1);
                     } else {
                         if (index - 1 == lines.size() - 1) {
+                            found = true;
                             LocalDateTime time = LocalDateTime.now();
                             DateTimeFormatter format = DateTimeFormatter.ofPattern("MMMM-dd-yyyy eeee HH:mm:ss");
                             String updatedAt = time.format(format);
                             String jsonString = lines.get(lines.size() - 1);
                             String currentDescription = getString("Description", lines.get(lines.size() - 1));
                             String currentUpdatedAt = getString("updatedAt", lines.get(lines.size() - 1));
+                            if (description.equals("in-progress") || description.equals("done")) {
+                                currentDescription = getString("status", lines.get(lines.size() - 1));
+                            }
 
                             jsonString = jsonString.replace("\"" + currentDescription + "\"", "\"" + description + "\"");
                             jsonString = jsonString.replace("\"updatedAt\": \"" + currentUpdatedAt + "\"", "\"updatedAt\": \"" + updatedAt + "\"");
@@ -103,10 +108,14 @@ public class Main {
                 }
 
             }
+            if (!found) {
+                System.out.println("Task ID does not exist!");
+                System.exit(0);
+            }
             FileWriter writer = new FileWriter("data.json", false);
             writer.write("[\n");
             for (String i : lines) {
-                System.out.println(i);
+
                 writer.write(i + "\n");
             }
             writer.write("]\n");
@@ -145,6 +154,8 @@ public class Main {
                         System.out.printf("%-4d%-29s%-8s%-44s", ID, description, status, createdAt);
                         if (updatedAt.isBlank()) {
                             System.out.print("Not updated yet");
+                        } else {
+                            System.out.printf("%s", updatedAt);
                         }
                         System.out.println();
                     }
@@ -161,16 +172,68 @@ public class Main {
         }
     }
 
+    public void deleteTask(int id) throws IOException {
+        try {
+            FileReader filepath = new FileReader("data.json");
+            BufferedReader buffer = new BufferedReader(filepath);
+            ArrayList<String> lines = new ArrayList<>();
+            boolean removed = false;
+            int copyCounter = 0;
+
+            while (true) {
+                try {
+                    lines.add(buffer.readLine());
+                    if (lines.get(lines.size() - 1).equals("]") || lines.get(lines.size() - 1).equals("[")) {
+                        lines.remove(lines.size() - 1);
+                        continue;
+                    }
+                    copyCounter++;
+                    if (copyCounter == id) {
+                        removed = true;
+                        lines.remove(id - 1);
+
+                    }
+
+                } catch (NullPointerException e) {
+                    buffer.close();
+                    lines.remove(lines.size() - 1); // remove the null String in the lines Arraylist
+                    break;
+
+                }
+            }
+            if (!removed) {
+                System.out.println("Task ID does not exist!");
+                System.exit(0);
+            }
+            for (int i = id - 1; i < lines.size(); i++) {
+                String edit = lines.get(i);
+
+                edit = edit.replace("\"ID\": " + (i + 2), "\"ID\": " + (id));
+                lines.set(i, edit);
+                id++;
+            }
+
+            FileWriter writer = new FileWriter("data.json", false);
+            writer.write("[\n");
+            int counter = 1;
+            for (String i : lines) {
+                if (counter == lines.size()) {
+                    i = i.replace("},", "}");
+                }
+
+                writer.write(i + "\n");
+                counter++;
+            }
+            writer.write("]");
+            writer.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("You did not create any tasks yet!");
+        }
+    }
+
     public void listTask(String status) {
 
-        tasks.add(new Task("test"));
-        tasks.add(new Task("test1"));
-        tasks.add(new Task("test2"));
-        for (Task t : tasks) {
-            if (t.status.equals(status)) {
-                t.displayDetails();
-            }
-        }
     }
 
     public int getInt(String key, String jsonString) {
