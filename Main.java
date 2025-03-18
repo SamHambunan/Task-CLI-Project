@@ -37,7 +37,6 @@ public class Main {
                 lines.add(after);
 
             } while (true);
-            System.out.println("lines size: " + lines.size());
             lines.set(lines.size() - 2, (lines.get(lines.size() - 2).replace("]", "")));
             int ID = getInt("ID", lines.get(lines.size() - 2));
             ID++;
@@ -55,7 +54,6 @@ public class Main {
             copyWriter.close();
 
         } catch (FileNotFoundException e) { // create new file
-            System.out.println("File does not exist!");
             file = new FileWriter("data.json");
             file.write("[\n");
             tasks.add(new Task(description));
@@ -111,6 +109,8 @@ public class Main {
             if (!found) {
                 System.out.println("Task ID does not exist!");
                 System.exit(0);
+            } else {
+                System.out.println("Sucessfully updated Task ID no. " + index);
             }
             FileWriter writer = new FileWriter("data.json", false);
             writer.write("[\n");
@@ -274,12 +274,12 @@ public class Main {
                     break;
                 }
             }
+            if (!found) {
+                System.out.println("There are no " + status + " task/tasks");
+            }
 
         } catch (FileNotFoundException e) {
             System.out.println("You did not create any task yet!");
-        }
-        if (!found) {
-            System.out.println("There are no " + status + " task/tasks");
         }
 
     }

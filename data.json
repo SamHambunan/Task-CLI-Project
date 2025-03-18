@@ -1,6 +1,0 @@
-[
-{"ID": 1, "Description": "Buy Groceries", "status": "done", "createdAt": "March-14-2025 Friday 15:45:47", "updatedAt": "March-16-2025 Sunday 12:35:45" },
-{"ID": 2, "Description": "Wash the Dishes", "status": "done", "createdAt": "March-14-2025 Friday 15:46:01", "updatedAt": "March-16-2025 Sunday 12:37:31" },
-{"ID": 3, "Description": "Fix the Clothes", "status": "todo", "createdAt": "March-14-2025 Friday 15:46:10", "updatedAt": "" },
-{"ID": 4, "Description": "Fix your bed", "status": "todo", "createdAt": "March-16-2025 Sunday 12:02:03", "updatedAt": "" }
-]

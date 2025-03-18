@@ -34,7 +34,7 @@ public class CLI {
                 }
             }
             case "update" -> {
-                if (args.length == 2) {
+                if (args.length == 3) {
                     try {
                         int id = Integer.parseInt(args[1]); // parses the input to an integer
                         main.updateTask(id, args[2]);
