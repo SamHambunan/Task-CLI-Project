@@ -232,7 +232,55 @@ public class Main {
         }
     }
 
-    public void listTask(String status) {
+    public void listTask(String status) throws IOException {
+        int ID;
+        String description;
+        String currentStatus;
+        String createdAt;
+        String updatedAt;
+        boolean found = false;
+
+        ArrayList<String> lines = new ArrayList<>();
+        try {
+            FileReader file = new FileReader("data.json");
+            BufferedReader buffer = new BufferedReader(file);
+            while (true) {
+                try {
+                    lines.add(buffer.readLine());
+                    if (lines.get(lines.size() - 1).equals("[") || lines.get(lines.size() - 1).equals("]")) {
+                        lines.remove(lines.size() - 1); // removes "["  or "]"
+                    } else {
+                        String current = lines.get(lines.size() - 1);
+                        ID = getInt("ID", current);
+                        description = getString("Description", current);
+                        currentStatus = getString("status", current);
+                        createdAt = getString("createdAt", current);
+                        updatedAt = getString("updatedAt", current);
+                        if (currentStatus.equals(status)) {
+                            found = true;
+                            System.out.printf("%-4d%-29s%-8s%-44s", ID, description, status, createdAt);
+                            if (updatedAt.isBlank()) {
+                                System.out.print("Not updated yet");
+                            } else {
+                                System.out.printf("%s", updatedAt);
+                            }
+                            System.out.println();
+                        }
+
+                    }
+
+                } catch (NullPointerException e) {
+                    buffer.close();
+                    break;
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("You did not create any task yet!");
+        }
+        if (!found) {
+            System.out.println("There are no " + status + " task/tasks");
+        }
 
     }
 
@@ -260,10 +308,10 @@ public class Main {
     }
 
     public String getString(String key, String jsonString) {
-        int index = 0;
+        int index;
         if (jsonString.contains("\"" + key + "\"")) {
             index = jsonString.indexOf("\"" + key + "\""); // moves index to ->"key" points to the first double quotation 
-            String substring = jsonString.substring(index + 1); // returns "key": "data"
+            String substring = jsonString.substring(index); // returns "key": "data"
             index = substring.indexOf(":");
             substring = substring.substring(index + 1); // returns ": \"data\" "
             index = substring.indexOf("\"");
